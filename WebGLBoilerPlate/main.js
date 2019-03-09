@@ -1,4 +1,12 @@
 var cubeRotation = 0.0;
+var tracks=new Array();
+var trains=new Array();
+var walls=new Array();
+var boots=new Array();
+var coins=new Array();
+var obstacleStands=new Array();
+var  obstacles1=new Array();
+ var powerups=new Array();
 main();
 function loadTexture(gl, url) {
   const texture = gl.createTexture();
@@ -48,13 +56,6 @@ function main() {
   const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
 
   hero = new hero(gl, [2, 5, -1.0]);
-  tracks=[];
-  trains=[];
-  walls=[];
-  boots=[];
-  coins=[];
-  obstacleStands=[];
-  obstacles1=[];
   tracks.push(new track(gl, [hero.pos[0]-1.4, hero.pos[1]-1/10.0-1/15.0-1, hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -5.0, 5.0));
   var t=tracks[tracks.length-1];
   trains.push(new train(gl, [t.pos[0], t.pos[1]+2, t.pos[2]-10], -1.0, -1.0+4.0/3.0, -1.0, -0.5, -4.0, 1.0));
@@ -69,7 +70,7 @@ function main() {
   obstacleStands.push(new obstacleStand(gl, [hero.pos[0]-0.2, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
   obstacleStands.push(new obstacleStand(gl, [hero.pos[0]+0.2, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
   // If we don't have a GL context, give up now
-
+  powerups.push(new powerup(gl, [hero.pos[0]+0.2, t.pos[1]+t.y2+0.1-3, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
   if (!gl) {
     alert('Unable to initialize WebGL. Your browser or machine may not support it.');
     return;
@@ -146,7 +147,7 @@ function main() {
 // Draw the scene.
 //
 function tick(gl){
-   var temp_track=tracks[tracks.length-1];
+  var temp_track=tracks[tracks.length-1];
    tracks.push(new track(gl, [0.2, temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
   tracks.push(new track(gl, [2,  temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
   tracks.push(new track(gl, [3.4,  temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
@@ -279,6 +280,9 @@ for(var b of boots){
 }
 for(var c of coins){
   c.drawCoin(gl, projectionMatrix, programInfo, deltaTime);
+}
+for(var f of powerups){
+  f.drawPowerup(gl, projectionMatrix, programInfo, deltaTime);
 }
 }
 

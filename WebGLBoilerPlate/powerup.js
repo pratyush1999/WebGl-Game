@@ -1,6 +1,6 @@
 /// <reference path="webgl.d.ts" />
 
-let coin = class {
+let powerup = class {
     constructor(gl, pos, x1, x2, y1, y2, z1, z2) {
         
         this.rotation = 0;
@@ -113,7 +113,7 @@ let coin = class {
         
     }
 
-    drawCoin(gl, projectionMatrix, programInfo, deltaTime) {
+    drawPowerup(gl, projectionMatrix, programInfo, deltaTime) {
         const modelViewMatrix = mat4.create();
         mat4.translate(
             modelViewMatrix,
