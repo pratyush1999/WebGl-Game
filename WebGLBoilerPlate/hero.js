@@ -2,11 +2,9 @@
 
 let hero = class {
     constructor(gl, pos) {
-        this.rotation = -90;
-        this.fly=0;
+        this.rotation = 0;
         this.l=0.2;
         this.w=0.2;
-        this.fly=0;
         this.h=0.2+2/26.0+2/30.0;
         this.flagy=0;
         this.ground=pos[1];
@@ -30,10 +28,10 @@ let hero = class {
         this.faceColors = [
      [1.0,  1.0,  1.0,  1.0],   
     [1.0,  1.0,  0.0,  1.0],    
-    [1.0,  1.0,  1.0,  1.0],   
-    [1.0,  1.0,  1.0,  1.0],   
-    [1.0,  1.0,  1.0,  1.0],   
-    [1.0,  1.0,  1.0,  1.0],   
+    [0.0,  0.0,  1.0,  1.0],   
+    [0.0,  1.0,  1.0,  1.0],   
+    [1.0,  0.0,  0.0,  1.0],   
+    [1.0,  0.0,  1.0,  1.0],   
 
         ];
         this.torso=new cube(gl, [this.pos[0], this.pos[1], this.pos[2]], this.faceColors, 10);
@@ -49,15 +47,12 @@ let hero = class {
         this.head.drawCube(gl, projectionMatrix, programInfo, deltaTime);
 }
 tickHero(){
-    this.torso.rotation=this.rotation;
-    this.leg1.rotation=this.rotation;
-    this.leg2.rotation=this.rotation;
-    this.head.rotation=this.rotation
     if (this.flag>0) {
-        this.flag-=1;
-        this.zspeed=this.maxzspeed/4;
-    }else {
-        this.zspeed=this.maxzspeed;
+        this.flag+=1;
+        if (this.flag>6) {
+            this.flag=0;
+            this.zspeed=this.maxzspeed;
+        }
     }
     this.pos[2]+=this.zspeed;
     //this.pos[2]+=this.zspeed;
@@ -65,22 +60,18 @@ tickHero(){
      this.yspeed+=this.gravity;
     else
         this.yspeed=0;
-    if (this.flagy>0) {
-        this.flagy-=1;
-    }
     this.pos[1]+=this.yspeed;
     this.pos[0]+=this.xspeed;
-    if (this.fly>0) {
-        this.fly-=1;
-        if (this.fly==0) {
-            this.pos[1]=this.ground;
-        }else{
-            this.pos[1]=10;
-            this.yspeed=0;
-        }
-    }
-     if (this.pos[1]<this.ground && this.flagy==0) {
+
+     if (this.pos[1]<this.ground) {
         this.pos[1]=this.ground;
+    }
+      if (this.flagy>0) {
+        this.flagy+=1;
+        if (this.flagy>4) {
+            this.flagy=0;
+            this.pos[1]-=1;
+        }
     }
     this.torso.pos=this.pos;
     this.leg1.pos=[this.torso.pos[0]-0.1/2, this.torso.pos[1]-1/10.0-1/26.0, this.torso.pos[2]];

@@ -51,7 +51,7 @@ function main() {
   tracks=[];
   trains=[];
   walls=[];
-  jets=[];
+  boots=[];
   obstacleStands=[];
   obstacles1=[];
   tracks.push(new track(gl, [hero.pos[0]-1.4, hero.pos[1]-1/10.0-1/15.0-1, hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -5.0, 5.0));
@@ -61,11 +61,13 @@ function main() {
   walls.push(new train(gl, [t.pos[0]-0.5, t.pos[1]+2, t.pos[2]], 4.0, 5.0, -1.0, -0., -4.0, 1.0));
   tracks.push(new track(gl, [hero.pos[0], t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -5.0, 5.0));
   tracks.push(new track(gl, [hero.pos[0]+1.4, t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -5.0, 5.0));
-  obstacles1.push(new obstacle1(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.1, 0.1, -0.1, 0.1, -0.05, 0.05));;
+  boots.push(new boot(gl, [hero.pos[0]-0.2, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.1, 0.1, -0.1, 0.1, -0.1, 0.1));
+  //obstacles1.push(new obstacle1(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.1, 0.1, -0.1, 0.1, -0.05, 0.05));;
   obstacles1.push(new obstacle1(gl, [hero.pos[0], t.pos[1]+1.3, t.pos[2]-10], -0.2, 0.2, -0.1, 0.1, -0.05, 0.05)); 
   obstacleStands.push(new obstacleStand(gl, [hero.pos[0]-0.2, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
   obstacleStands.push(new obstacleStand(gl, [hero.pos[0]+0.2, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
-  jets.push(new Jet(gl, [hero.pos[0], t.pos[1]+t.y2+0.2-4, t.pos[2]-10], -0.1, 0.1, -0.2, 0.2, -0.2, 0.2));
+  // If we don't have a GL context, give up now
+
   if (!gl) {
     alert('Unable to initialize WebGL. Your browser or machine may not support it.');
     return;
@@ -151,16 +153,13 @@ for (var p of tracks)
 {
   p.tickTrack(0);
 }
-for (var p of jets)
-{
-  p.tickJet(0);
-}
 for (var p of obstacles1)
 {
   p.tickObstacle1(0);
   if (checkCollisionyz(p, hero)) {
         hero.pos[2]-=1; 
-        hero.flag=10;
+        hero.zspeed-=hero.zspeed/4;
+        hero.flag=1;
   }
 }
 hero.onTrain=0;
@@ -174,19 +173,14 @@ for (var p of trains)
     else if(checkCollisionxz(p, hero)&&hero.pos[1]<p.pos[1]+p.y2-hero.y1-0.15)
       {
         hero.pos[0]-=hero.xspeed; 
-        hero.flag=3;
+        hero.zspeed-=hero.zspeed/4;
+        hero.flag=1;
       }
       else if (checkCollisionyz(p, hero)) {
         hero.onTrain=1;
         hero.pos[1]=p.pos[1]+p.y2-hero.y1;
       } 
   
-}
-for(var p of jets){
-  if (checkCollisionyz(p, hero)) {
-    hero.fly=5;
-    hero.test=1;
-  }
 }
 hero.xspeed=0;
 }
@@ -235,8 +229,7 @@ function drawScene(gl, programInfo, deltaTime, texture_track, texture_wall, text
 
     var up = [0, 1, 0];
 
-    mat4.lookAt(cameraMatrix, cameraPosition, [hero.pos[0], 5, hero.pos[2]-10], up);
-
+    mat4.lookAt(cameraMatrix, cameraPosition, [hero.pos[0], 5, hero.pos[2]-5], up);
 
     var viewMatrix = cameraMatrix;//mat4.create();
 
@@ -247,10 +240,6 @@ function drawScene(gl, programInfo, deltaTime, texture_track, texture_wall, text
     mat4.multiply(viewProjectionMatrix, projectionMatrix, viewMatrix);
 
 hero.drawHero(gl, viewProjectionMatrix, programInfo, deltaTime);
-for(var p of jets)
-{
-  p.drawJet(gl, projectionMatrix, programInfo, deltaTime);
-}
 for (var p of tracks)
 {
   p.drawTrack(gl, viewProjectionMatrix, programInfo, deltaTime, texture_track);
@@ -270,6 +259,9 @@ for (var p of obstacles1)
 for (var p of obstacleStands)
 {
   p.drawObstacleStand(gl, viewProjectionMatrix, programInfo, deltaTime);
+}
+for(var b of boots){
+  b.drawBoot(gl, viewProjectionMatrix, programInfo, deltaTime);
 }
 }
 

@@ -105,7 +105,7 @@ let cuboidColor = class {
         mat4.rotate(modelViewMatrix,
             modelViewMatrix,
             this.rotation,
-            [1, 0, 0]);
+            [1, 1, 1]);
 
         {
             const numComponents = 3;
