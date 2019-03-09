@@ -52,6 +52,7 @@ function main() {
   trains=[];
   walls=[];
   boots=[];
+  coins=[];
   obstacleStands=[];
   obstacles1=[];
   tracks.push(new track(gl, [hero.pos[0]-1.4, hero.pos[1]-1/10.0-1/15.0-1, hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -5.0, 5.0));
@@ -61,8 +62,9 @@ function main() {
   walls.push(new train(gl, [t.pos[0]-0.5, t.pos[1]+2, t.pos[2]], 4.0, 5.0, -1.0, -0., -4.0, 1.0));
   tracks.push(new track(gl, [hero.pos[0], t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -5.0, 5.0));
   tracks.push(new track(gl, [hero.pos[0]+1.4, t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -5.0, 5.0));
-  boots.push(new boot(gl, [hero.pos[0]-0.2, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.1, 0.1, -0.1, 0.1, -0.1, 0.1));
+  boots.push(new boot(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-6], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005));
   //obstacles1.push(new obstacle1(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.1, 0.1, -0.1, 0.1, -0.05, 0.05));;
+  coins.push(new coin(gl, [hero.pos[0]-0.1, t.pos[1]+t.y2+0.1-4, t.pos[2]-4], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005))
   obstacles1.push(new obstacle1(gl, [hero.pos[0], t.pos[1]+1.3, t.pos[2]-10], -0.2, 0.2, -0.1, 0.1, -0.05, 0.05)); 
   obstacleStands.push(new obstacleStand(gl, [hero.pos[0]-0.2, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
   obstacleStands.push(new obstacleStand(gl, [hero.pos[0]+0.2, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
@@ -160,6 +162,18 @@ for (var p of obstacles1)
         hero.pos[2]-=1; 
         hero.zspeed-=hero.zspeed/4;
         hero.flag=1;
+  }
+}
+for(var p of boots)
+{
+  if (checkCollisionyz(p, hero)) {
+    hero.onboot=20;
+    hero.test=1;
+  }
+}
+for(var c of coins){
+  if (checkCollisionyz(c, hero)) {
+    hero.test=1;
   }
 }
 hero.onTrain=0;
@@ -262,6 +276,9 @@ for (var p of obstacleStands)
 }
 for(var b of boots){
   b.drawBoot(gl, viewProjectionMatrix, programInfo, deltaTime);
+}
+for(var c of coins){
+  c.drawCoin(gl, projectionMatrix, programInfo, deltaTime);
 }
 }
 

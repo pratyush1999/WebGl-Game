@@ -17,6 +17,7 @@ let hero = class {
         this.gravity=-0.05/5;
         this.xspeed=0
         this.flag=0;
+        this.onboot=0;
         this.test=0;
         this.onTrain=0;
         this.x1=-this.w/2;
@@ -34,16 +35,33 @@ let hero = class {
     [1.0,  0.0,  1.0,  1.0],   
 
         ];
+          this.faceColorsBoots = [
+     [Math.random(),  Math.random(),  Math.random(),  Math.random()],   
+    [Math.random(),  Math.random(),  Math.random(),  Math.random()],    
+    [Math.random(),  Math.random(),  Math.random(),  Math.random()],   
+    [Math.random(),  Math.random(),  Math.random(),  Math.random()],   
+    [Math.random(),  Math.random(),  Math.random(),  Math.random()],   
+    [Math.random(),  Math.random(),  Math.random(),  Math.random()],   
+
+        ];
         this.torso=new cube(gl, [this.pos[0], this.pos[1], this.pos[2]], this.faceColors, 10);
         this.leg1=new cube(gl, [this.torso.pos[0]-0.1/2, this.torso.pos[1]-1/10.0-1/26.0, this.torso.pos[2]], this.faceColors, 26);
         this.leg2=new cube(gl, [this.torso.pos[0]+0.1/2, this.torso.pos[1]-1/10.0-1/26.0, this.torso.pos[2]], this.faceColors, 26);
         this.head=new cube(gl, [this.torso.pos[0], this.torso.pos[1]+1/10.0+1/30.0, this.torso.pos[2]], this.faceColors, 30);
+        this.bootleg1=new cube(gl, [this.torso.pos[0]-0.1/2, this.torso.pos[1]-1/10.0-1/26.0, this.torso.pos[2]], this.faceColorsBoots, 26);
+        this.bootleg2=new cube(gl, [this.torso.pos[0]+0.1/2, this.torso.pos[1]-1/10.0-1/26.0, this.torso.pos[2]], this.faceColorsBoots, 26);
     }   
 
     drawHero(gl, projectionMatrix, programInfo, deltaTime) {
         this.torso.drawCube(gl, projectionMatrix, programInfo, deltaTime);
-        this.leg1.drawCube(gl, projectionMatrix, programInfo, deltaTime);
-        this.leg2.drawCube(gl, projectionMatrix, programInfo, deltaTime);
+        if (this.onboot>0) {
+            this.bootleg1.drawCube(gl, projectionMatrix, programInfo, deltaTime);
+            this.bootleg2.drawCube(gl, projectionMatrix, programInfo, deltaTime);
+        }
+        else{
+             this.leg1.drawCube(gl, projectionMatrix, programInfo, deltaTime);
+             this.leg2.drawCube(gl, projectionMatrix, programInfo, deltaTime);
+        }
         this.head.drawCube(gl, projectionMatrix, programInfo, deltaTime);
 }
 tickHero(){
@@ -55,6 +73,12 @@ tickHero(){
         }
     }
     this.pos[2]+=this.zspeed;
+    if (this.onboot>0){
+         this.inityspeed=0.1;
+         this.onboot-=1;
+    }else{
+        this.inityspeed=0.05;
+    }
     //this.pos[2]+=this.zspeed;
     if((this.pos[1]>this.ground || this.yspeed>0)&&!this.onTrain)
      this.yspeed+=this.gravity;
@@ -77,5 +101,7 @@ tickHero(){
     this.leg1.pos=[this.torso.pos[0]-0.1/2, this.torso.pos[1]-1/10.0-1/26.0, this.torso.pos[2]];
     this.leg2.pos=[this.torso.pos[0]+0.1/2, this.torso.pos[1]-1/10.0-1/26.0, this.torso.pos[2]];
     this.head.pos=[this.torso.pos[0], this.torso.pos[1]+1/10.0+1/30.0, this.torso.pos[2]];
+    this.bootleg2.pos=this.leg2.pos;
+    this.bootleg1.pos=this.leg1.pos;
 }
 };

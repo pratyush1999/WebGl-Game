@@ -24,7 +24,7 @@ let boot = class {
 
         ];
         this.figure=new cuboidColor(gl, this.pos, this.faceColors, x1, x2, y1, y2, z1, z2);
-        this.figure1=new cuboidColor(gl, [this.pos[0], this.pos[1]+y1+y2/4, this.pos[2]], this.faceColors, x1, x2, y1/4, y2/4, 2*z1, 2*z2);
+        this.figure1=new cuboidColor(gl, [this.pos[0], this.pos[1]+y1+y2/4, this.pos[2]+z2], this.faceColors, x1, x2, y1/4, y2/4, 2*z1, 2*z2);
     }
 
     drawBoot(gl, projectionMatrix, programInfo, deltaTime) {
