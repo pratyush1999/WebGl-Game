@@ -13,6 +13,7 @@ let coin = class {
         this.y2=y2;
         this.z1=z1;
         this.z2=z2;
+        this.iscoin=1;
         this.pos = pos;
         this.faceColors = [
      [1.0,  1.0,  1.0,  1.0],   

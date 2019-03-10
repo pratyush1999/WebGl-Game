@@ -12,7 +12,8 @@ let obstacleStand = class {
         this.y1=y1;
         this.y2=y2;
         this.z1=z1;
-        this.z2=z2;
+        this.z2=z2;        
+        this.isJet=0;
         this.pos = pos;
         this.faceColors = [
      [1.0,  1.0,  1.0,  1.0],   

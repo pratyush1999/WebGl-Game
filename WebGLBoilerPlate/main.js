@@ -6,7 +6,7 @@ var boots=new Array();
 var coins=new Array();
 var obstacleStands=new Array();
 var  obstacles1=new Array();
- var powerups=new Array();
+ var jets=new Array();
 main();
 function loadTexture(gl, url) {
   const texture = gl.createTexture();
@@ -58,19 +58,23 @@ function main() {
   hero = new hero(gl, [2, 5, -1.0]);
   tracks.push(new track(gl, [hero.pos[0]-1.4, hero.pos[1]-1/10.0-1/15.0-1, hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -5.0, 5.0));
   var t=tracks[tracks.length-1];
-  trains.push(new train(gl, [t.pos[0], t.pos[1]+2, t.pos[2]-10], -1.0, -1.0+4.0/3.0, -1.0, -0.5, -4.0, 1.0));
+ // trains.push(new train(gl, [t.pos[0], t.pos[1]+2, t.pos[2]-10], -1.0, -1.0+4.0/3.0, -1.0, -0.5, -4.0, 1.0));
   walls.push(new train(gl, [t.pos[0]-0.5, t.pos[1]+2, t.pos[2]], -3.0, -1.0, -1.0, -0., -4.0, 10.0));
   walls.push(new train(gl, [t.pos[0]-0.5, t.pos[1]+2, t.pos[2]], 4.0, 5.0, -1.0, -0., -4.0, 1.0));
   tracks.push(new track(gl, [hero.pos[0], t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -5.0, 5.0));
   tracks.push(new track(gl, [hero.pos[0]+1.4, t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -5.0, 5.0));
-  boots.push(new boot(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-6], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005));
+  //boots.push(new boot(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-8], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005));
+ // boots.push(new coin(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-6], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005));
   //obstacles1.push(new obstacle1(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.1, 0.1, -0.1, 0.1, -0.05, 0.05));;
-  coins.push(new coin(gl, [hero.pos[0]-0.1, t.pos[1]+t.y2+0.1-4, t.pos[2]-4], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005))
+  //coins.push(new coin(gl, [hero.pos[0]-0.1, t.pos[1]+t.y2+0.1-4, t.pos[2]-4], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005))
   obstacles1.push(new obstacle1(gl, [hero.pos[0], t.pos[1]+1.3, t.pos[2]-10], -0.2, 0.2, -0.1, 0.1, -0.05, 0.05)); 
+
   obstacleStands.push(new obstacleStand(gl, [hero.pos[0]-0.2, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
   obstacleStands.push(new obstacleStand(gl, [hero.pos[0]+0.2, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
+  obstacleStands.push(new jet(gl, [hero.pos[0], t.pos[1]+t.y2+0.04, t.pos[2]-4], -0.03, 0.03, -0.04, 0.04, -0.02, 0.02));
+  obstacleStands.push(new jet(gl, [hero.pos[0]-0.02/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1], -0.02/4, 0.02/4, -0.04/4, 0.04/4, -0.02, 0.02));
+  obstacleStands.push(new jet(gl, [hero.pos[0]+0.02/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1], -0.02/4, 0.02/4, -0.04/4, 0.04/4, -0.02, 0.02));
   // If we don't have a GL context, give up now
-  powerups.push(new powerup(gl, [hero.pos[0]+0.2, t.pos[1]+t.y2+0.1-3, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
   if (!gl) {
     alert('Unable to initialize WebGL. Your browser or machine may not support it.');
     return;
@@ -165,6 +169,11 @@ for (var p of obstacles1)
         hero.flag=1;
   }
 }
+for(var p of obstacleStands){
+  if (checkCollisionyz(p, hero)&&p.isJet==1) {
+    hero.fly=10;
+  }
+}
 for(var p of boots)
 {
   if (checkCollisionyz(p, hero)) {
@@ -235,7 +244,7 @@ function drawScene(gl, programInfo, deltaTime, texture_track, texture_wall, text
   // Set the drawing position to the "identity" point, which is
   // the center of the scene.
     var cameraMatrix = mat4.create();
-    mat4.translate(cameraMatrix, cameraMatrix, [hero.pos[0], 5, hero.pos[2]+2]);
+    mat4.translate(cameraMatrix, cameraMatrix, [hero.pos[0], hero.pos[1], hero.pos[2]+2]);
     var cameraPosition = [
       cameraMatrix[12],
       cameraMatrix[13],
@@ -244,7 +253,7 @@ function drawScene(gl, programInfo, deltaTime, texture_track, texture_wall, text
 
     var up = [0, 1, 0];
 
-    mat4.lookAt(cameraMatrix, cameraPosition, [hero.pos[0], 5, hero.pos[2]-5], up);
+    mat4.lookAt(cameraMatrix, cameraPosition, [hero.pos[0], hero.pos[1], hero.pos[2]-5], up);
 
     var viewMatrix = cameraMatrix;//mat4.create();
 
@@ -273,16 +282,22 @@ for (var p of obstacles1)
 }
 for (var p of obstacleStands)
 {
+  if(p.isJet==0)
   p.drawObstacleStand(gl, viewProjectionMatrix, programInfo, deltaTime);
+else
+  p.drawJet(gl, viewProjectionMatrix, programInfo, deltaTime);
 }
 for(var b of boots){
+  if(b.iscoin)
+  b.drawCoin(gl, viewProjectionMatrix, programInfo, deltaTime);
+else
   b.drawBoot(gl, viewProjectionMatrix, programInfo, deltaTime);
 }
 for(var c of coins){
   c.drawCoin(gl, projectionMatrix, programInfo, deltaTime);
 }
-for(var f of powerups){
-  f.drawPowerup(gl, projectionMatrix, programInfo, deltaTime);
+for(var p of jets){
+  p.drawJet(gl, projectionMatrix, programInfo, deltaTime);
 }
 }
 

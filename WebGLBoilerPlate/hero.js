@@ -8,6 +8,7 @@ let hero = class {
         this.h=0.2+2/26.0+2/30.0;
         this.flagy=0;
         this.ground=pos[1];
+        this.fly=0;
         this.pos = pos;
         this.zspeed=-0.5;
         this.maxzspeed=-0.5;
@@ -84,6 +85,7 @@ tickHero(){
      this.yspeed+=this.gravity;
     else
         this.yspeed=0;
+   
     this.pos[1]+=this.yspeed;
     this.pos[0]+=this.xspeed;
 
@@ -97,11 +99,21 @@ tickHero(){
             this.pos[1]-=1;
         }
     }
+     if (this.fly>0) {
+        this.fly-=1;
+        this.rotation=-90;
+        this.pos[1]=1;
+    }else
+    this.rotation=0;
     this.torso.pos=this.pos;
     this.leg1.pos=[this.torso.pos[0]-0.1/2, this.torso.pos[1]-1/10.0-1/26.0, this.torso.pos[2]];
     this.leg2.pos=[this.torso.pos[0]+0.1/2, this.torso.pos[1]-1/10.0-1/26.0, this.torso.pos[2]];
     this.head.pos=[this.torso.pos[0], this.torso.pos[1]+1/10.0+1/30.0, this.torso.pos[2]];
     this.bootleg2.pos=this.leg2.pos;
     this.bootleg1.pos=this.leg1.pos;
+    this.torso.rotation=this.rotation;
+    this.head.rotation=this.rotation;
+    this.leg1.rotation=this.rotation;
+    this.leg2.rotation=this.rotation;
 }
 };
