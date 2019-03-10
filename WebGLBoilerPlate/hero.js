@@ -1,10 +1,11 @@
 /// <reference path="webgl.d.ts" />
 
 let hero = class {
-    constructor(gl, pos) {
+    constructor(gl, pos, police) {
         this.rotation = 0;
         this.l=0.2;
         this.w=0.2;
+        this.police=police;
         this.h=0.2+2/26.0+2/30.0;
         this.flagy=0;
         this.ground=pos[1];
@@ -47,6 +48,9 @@ let hero = class {
     [Math.random(),  Math.random(),  Math.random(),  Math.random()],   
 
         ];
+        if (this.police) {
+            this.faceColors=this.faceColorsBoots;
+        }
         this.torso=new cube(gl, [this.pos[0], this.pos[1], this.pos[2]], this.faceColors, 10);
         this.leg1=new cube(gl, [this.torso.pos[0]-0.1/2, this.torso.pos[1]-1/10.0-1/26.0, this.torso.pos[2]], this.faceColors, 26);
         this.leg2=new cube(gl, [this.torso.pos[0]+0.1/2, this.torso.pos[1]-1/10.0-1/26.0, this.torso.pos[2]], this.faceColors, 26);
@@ -70,8 +74,8 @@ let hero = class {
 tickHero(){
     if (this.flag>0) {
         this.flag+=1;
-        this.zspeed=this.zspeed/2;
-        if (this.flag>6) {
+        this.zspeed=this.maxzspeed/2;
+        if (this.flag>10) {
             this.flag=0;
             this.zspeed=this.maxzspeed;
         }

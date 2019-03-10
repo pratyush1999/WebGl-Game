@@ -54,8 +54,8 @@ function isPowerOf2(value) {
 function main() {
   const canvas = document.querySelector('#glcanvas');
   const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-
-  hero = new hero(gl, [2, 5, -1.0]); 
+  walls.push(new hero(gl, [2, 5, 0], 1));
+  hero = new hero(gl, [2, 5, -1.0], 0); 
   tracks.push(new track(gl, [hero.pos[0]-1.4, hero.pos[1]-1/10.0-1/15.0-1, hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0, 0));
   var t=tracks[tracks.length-1];
   for(var i=0;i>-30;i-=2)
@@ -89,6 +89,7 @@ function main() {
   obstacleStands.push(new jet(gl, [hero.pos[0]-0.02/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1], -0.02/4, 0.02/4, -0.04/4, 0.04/4, -0.02, 0.02));
   obstacleStands.push(new jet(gl, [hero.pos[0]+0.02/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1], -0.02/4, 0.02/4, -0.04/4, 0.04/4, -0.02, 0.02));
   // If we don't have a GL context, give up now
+
   if (!gl) {
     alert('Unable to initialize WebGL. Your browser or machine may not support it.');
     return;
@@ -169,7 +170,8 @@ function tick(gl){
   //  tracks.push(new track(gl, [0.2, temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
   // tracks.push(new track(gl, [2,  temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
   // tracks.push(new track(gl, [3.4,  temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
-   walls.push(new train(gl, [0.6, t.pos[1], hero.pos[2]], -3.0, -1.0, -1.0, -0., -10.0, 1.0));
+  walls[0].tickHero();
+  walls.push(new train(gl, [0.6, t.pos[1], hero.pos[2]], -3.0, -1.0, -1.0, -0., -10.0, 1.0));
   walls.push(new train(gl, [0.6-0.5-0.4, t.pos[1], hero.pos[2]], 4.0, 5.0, -1.0, -0., -10.0, 1.0));
 hero.tickHero();
 for (var p of tracks)
@@ -205,8 +207,11 @@ for(var p of boots)
   }
   }
 }
-for(var p of walls){
-  if (checkCollisionyz(p, hero)) {
+if (checkCollisionyz(walls[0], hero)&&hero.zspeed<hero.maxzspeed) {
+  hero.lives-=2;
+}
+for(var i = walls.length - 1; i > 0; i--){
+  if (checkCollisionyz(walls[i], hero)) {
     hero.pos[0]-=hero.xspeed;
   }
 }
@@ -268,7 +273,7 @@ function drawScene(gl, programInfo, deltaTime, texture_wall, texture_train, text
   // Set the drawing position to the "identity" point, which is
   // the center of the scene.
     var cameraMatrix = mat4.create();
-    mat4.translate(cameraMatrix, cameraMatrix, [hero.pos[0], hero.pos[1], hero.pos[2]+2]);
+    mat4.translate(cameraMatrix, cameraMatrix, [hero.pos[0], hero.pos[1]+0.8, hero.pos[2]+8]);
     var cameraPosition = [
       cameraMatrix[12],
       cameraMatrix[13],
@@ -296,10 +301,12 @@ for (var p of trains)
 {
   p.drawTrain(gl, viewProjectionMatrix, programInfo, deltaTime, texture_train);
 }
-for (var p of walls)
+for (var i = walls.length - 1; i > 0; i--)
 {
-  p.drawTrain(gl, viewProjectionMatrix, programInfo, deltaTime, texture_wall);
+  walls[i].drawTrain(gl, viewProjectionMatrix, programInfo, deltaTime, texture_wall);
 }
+if(hero.zspeed<hero.maxzspeed || hero.pos[2]==-1+hero.zspeed)
+walls[0].drawHero(gl, viewProjectionMatrix, programInfo, deltaTime);
 for (var p of obstacles1)
 {
   p.drawObstacle1(gl, viewProjectionMatrix, programInfo, deltaTime, texture_obstacle1);
