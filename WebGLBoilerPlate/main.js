@@ -56,15 +56,17 @@ function main() {
   const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
 
   hero = new hero(gl, [2, 5, -1.0]);
-  tracks.push(new track(gl, [hero.pos[0]-1.4, hero.pos[1]-1/10.0-1/15.0-1, hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -5.0, 5.0));
+  tracks.push(new track(gl, [hero.pos[0]-1.4, hero.pos[1]-1/10.0-1/15.0-1, hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0));
   var t=tracks[tracks.length-1];
- // trains.push(new train(gl, [t.pos[0], t.pos[1]+2, t.pos[2]-10], -1.0, -1.0+4.0/3.0, -1.0, -0.5, -4.0, 1.0));
+  trains.push(new train(gl, [t.pos[0], t.pos[1]+t.y2+1-0.2, t.pos[2]-10], -1.0, -1.0+4.0/3.0, -1.0, 1, -4.0, 1.0));
+  trains.push(new train(gl, [t.pos[0]+3, t.pos[1]+t.y2+1-0.2, t.pos[2]-10], -1.0, -1.0+4.0/3.0, -1.0, 1, -4.0, 1.0));
   walls.push(new train(gl, [t.pos[0]-0.5, t.pos[1]+2, t.pos[2]], -3.0, -1.0, -1.0, -0., -4.0, 10.0));
   walls.push(new train(gl, [t.pos[0]-0.5, t.pos[1]+2, t.pos[2]], 4.0, 5.0, -1.0, -0., -4.0, 1.0));
-  tracks.push(new track(gl, [hero.pos[0], t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -5.0, 5.0));
-  tracks.push(new track(gl, [hero.pos[0]+1.4, t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -5.0, 5.0));
-  //boots.push(new boot(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-8], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005));
- // boots.push(new coin(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-6], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005));
+  tracks.push(new track(gl, [hero.pos[0], t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0));
+  tracks.push(new track(gl, [hero.pos[0]+1.4, t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0));
+  boots.push(new boot(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-8], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005));
+  for(var i=0;i<10;i+=1)
+    boots.push(new coin(gl, [hero.pos[0]-1.4, t.pos[1]+t.y2+0.1, t.pos[2]-3-i], -0.1, 0.1, -0.1, 0.1, -0.1, 0.1));
   //obstacles1.push(new obstacle1(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.1, 0.1, -0.1, 0.1, -0.05, 0.05));;
   //coins.push(new coin(gl, [hero.pos[0]-0.1, t.pos[1]+t.y2+0.1-4, t.pos[2]-4], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005))
   obstacles1.push(new obstacle1(gl, [hero.pos[0], t.pos[1]+1.3, t.pos[2]-10], -0.2, 0.2, -0.1, 0.1, -0.05, 0.05)); 
@@ -177,13 +179,13 @@ for(var p of obstacleStands){
 for(var p of boots)
 {
   if (checkCollisionyz(p, hero)) {
+    if (p.iscoin) {
+       hero.score+=1;
+       p.pos[1]=-1000;
+    }
+    else{
     hero.onboot=20;
-    hero.test=1;
   }
-}
-for(var c of coins){
-  if (checkCollisionyz(c, hero)) {
-    hero.test=1;
   }
 }
 hero.onTrain=0;
@@ -292,12 +294,6 @@ for(var b of boots){
   b.drawCoin(gl, viewProjectionMatrix, programInfo, deltaTime);
 else
   b.drawBoot(gl, viewProjectionMatrix, programInfo, deltaTime);
-}
-for(var c of coins){
-  c.drawCoin(gl, projectionMatrix, programInfo, deltaTime);
-}
-for(var p of jets){
-  p.drawJet(gl, projectionMatrix, programInfo, deltaTime);
 }
 }
 

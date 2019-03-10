@@ -27,6 +27,7 @@ let hero = class {
         this.y2=this.h/2;
         this.z1=-this.l/2;
         this.z2=this.l/2;
+        this.score=0;
         this.faceColors = [
      [1.0,  1.0,  1.0,  1.0],   
     [1.0,  1.0,  0.0,  1.0],    
@@ -94,15 +95,16 @@ tickHero(){
     }
       if (this.flagy>0) {
         this.flagy+=1;
+        hero.pos[1]-=1;
         if (this.flagy>4) {
             this.flagy=0;
-            this.pos[1]-=1;
+            this.pos[1]+=1;
         }
     }
      if (this.fly>0) {
         this.fly-=1;
         this.rotation=-90;
-        this.pos[1]=1;
+        this.pos[1]=9;
     }else
     this.rotation=0;
     this.torso.pos=this.pos;
