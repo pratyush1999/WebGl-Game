@@ -182,6 +182,9 @@ for (var p of obstacles1)
   if (checkCollisionyz(p, hero)) {
         hero.pos[2]-=1; 
         hero.zspeed-=hero.zspeed/4;
+        if (hero.flag>0) {
+          hero.lives-=1;
+        }
         hero.flag=1;
   }
 }

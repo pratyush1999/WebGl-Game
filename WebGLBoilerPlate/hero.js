@@ -20,6 +20,7 @@ let hero = class {
         this.flag=0;
         this.onboot=0;
         this.test=0;
+        this.lives=10;
         this.onTrain=0;
         this.x1=-this.w/2;
         this.x2=this.w/2;
@@ -69,6 +70,7 @@ let hero = class {
 tickHero(){
     if (this.flag>0) {
         this.flag+=1;
+        this.zspeed=this.zspeed/2;
         if (this.flag>6) {
             this.flag=0;
             this.zspeed=this.maxzspeed;
