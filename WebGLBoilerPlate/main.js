@@ -59,13 +59,15 @@ function isPowerOf2(value) {
 function main() {
   const canvas = document.querySelector('#glcanvas');
   const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-  walls.push(new hero(gl, [2, 5, 0], 1));
+  walls.push(new hero(gl, [2, 5, 0.1], 1));
   hero = new hero(gl, [2, 5, -1.0], 0); 
   tracks.push(new track(gl, [hero.pos[0]-1.4, hero.pos[1]-1/10.0-1/15.0-1, hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0, 0));
   var t=tracks[tracks.length-1];
   for(var i=0;i>-30;i-=2)
   {
     tracks.push(new track(gl, [hero.pos[0]-1.4, t.pos[1]+t.y2, hero.pos[2]+i], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
+    tracks[tracks.length-1].pebbles=1;
+     tracks.push(new track(gl, [hero.pos[0]-1.4, t.pos[1]+t.y2, hero.pos[2]-i], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
     tracks[tracks.length-1].pebbles=1;
   }
   trains.push(new train(gl, [t.pos[0], t.pos[1]+t.y2+1-0.2, t.pos[2]-10], -1.0, -1.0+4.0/3.0, -1.0, 1, -4.0, 1.0));
@@ -80,8 +82,12 @@ function main() {
     tracks[tracks.length-1].pebbles=1;
     tracks.push(new track(gl, [hero.pos[0]+1.4, t.pos[1]+t.y2, hero.pos[2]+i], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
     tracks[tracks.length-1].pebbles=1;
+     tracks.push(new track(gl, [hero.pos[0], t.pos[1]+t.y2, hero.pos[2]-i], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
+    tracks[tracks.length-1].pebbles=1;
+    tracks.push(new track(gl, [hero.pos[0]+1.4, t.pos[1]+t.y2, hero.pos[2]-i], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
+    tracks[tracks.length-1].pebbles=1;
   }
-  boots.push(new boot(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-8], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005));
+  boots.push(new boot(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-8], -0.05, 0.05, -0.1, 0.1, -0.005, 0.005));
   for(var i=0;i<10;i+=1)
     boots.push(new coin(gl, [hero.pos[0]-1.4, t.pos[1]+t.y2+0.1, t.pos[2]-3-i], -0.1, 0.1, -0.1, 0.1, -0.1, 0.1));
   //obstacles1.push(new obstacle1(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.1, 0.1, -0.1, 0.1, -0.05, 0.05));;
@@ -90,9 +96,13 @@ function main() {
 
   obstacleStands.push(new obstacleStand(gl, [hero.pos[0]-0.3, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
   obstacleStands.push(new obstacleStand(gl, [hero.pos[0]+0.1, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
-  obstacleStands.push(new jet(gl, [hero.pos[0], t.pos[1]+t.y2+0.04, t.pos[2]-4], -0.03, 0.03, -0.04, 0.04, -0.02, 0.02));
-  obstacleStands.push(new jet(gl, [hero.pos[0]-0.02/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1], -0.02/4, 0.02/4, -0.04/4, 0.04/4, -0.02, 0.02));
-  obstacleStands.push(new jet(gl, [hero.pos[0]+0.02/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1], -0.02/4, 0.02/4, -0.04/4, 0.04/4, -0.02, 0.02));
+  obstacles1.push(new obstacle1(gl, [hero.pos[0]-0.1, t.pos[1]+1.3, t.pos[2]-10-10], -0.2, 0.2, -0.1, 0.1, -0.05, 0.05)); 
+
+  obstacleStands.push(new obstacleStand(gl, [hero.pos[0]-0.3, t.pos[1]+t.y2+0.1, t.pos[2]-10-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
+  obstacleStands.push(new obstacleStand(gl, [hero.pos[0]+0.1, t.pos[1]+t.y2+0.1, t.pos[2]-10-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
+  // obstacleStands.push(new jet(gl, [hero.pos[0], t.pos[1]+t.y2+0.04, t.pos[2]-4], -0.1, 0.1, -0.1, 0.1, -0.02, 0.02));
+  // obstacleStands.push(new jet(gl, [hero.pos[0]-0.1/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1], -0.1/4, 0.1/4, -0.1/2, 0.1/2, -0.02, 0.02));
+  // obstacleStands.push(new jet(gl, [hero.pos[0]+0.1/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1], -0.1/4, 0.1/4, -0.1/2, 0.1/2, -0.02, 0.02));
   // If we don't have a GL context, give up now
 
   if (!gl) {
@@ -100,14 +110,8 @@ function main() {
     return;
   }
   // Vertex shader program
-        hero.grayscale=1;
 
-     texture_pebbles_g = loadTexture(gl, "stones1.jpeg"); 
-   texture_wall_g = loadTexture(gl, "wall1.jpeg");
- texture_train_g = loadTexture(gl, "train1.png");
-  texture_obstacle1_g= loadTexture(gl, "strips1.jpg"); 
-        hero.grayscale=0;
-    texture_pebbles = loadTexture(gl, "stones.jpeg"); 
+ texture_pebbles = loadTexture(gl, "stones.jpeg"); 
    texture_wall = loadTexture(gl, "wall.jpeg");
  texture_train = loadTexture(gl, "train.png");
   texture_obstacle1 = loadTexture(gl, "strips.jpg"); 
@@ -169,9 +173,7 @@ function main() {
     now *= 0.001;  // convert to seconds
     const deltaTime = now - then;
     then = now;
-    if(hero.grayscale==1)
-    drawScene(gl, programInfo, deltaTime, texture_wall_g, texture_train_g, texture_obstacle1_g, texture_pebbles_g);
-    else
+    
           drawScene(gl, programInfo, deltaTime, texture_wall, texture_train, texture_obstacle1, texture_pebbles);
 
     requestAnimationFrame(render);
@@ -187,6 +189,7 @@ function tick(gl){
   //  tracks.push(new track(gl, [0.2, temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
   // tracks.push(new track(gl, [2,  temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
   // tracks.push(new track(gl, [3.4,  temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
+  walls[0].pos[2]=hero.pos[2]+1;
   walls[0].tickHero();
   walls.push(new train(gl, [0.6, t.pos[1], hero.pos[2]], -3.0, -1.0, -1.0, -0., -10.0, 1.0));
   walls.push(new train(gl, [0.6-0.5-0.4, t.pos[1], hero.pos[2]], 4.0, 5.0, -1.0, -0., -10.0, 1.0));
@@ -200,7 +203,6 @@ for (var p of obstacles1)
   p.tickObstacle1(0);
   if (checkCollisionyz(p, hero)) {
         hero.pos[2]-=1; 
-        hero.zspeed-=hero.zspeed/4;
         if (hero.flag>0) {
           hero.lives-=1;
         }
@@ -221,10 +223,11 @@ for(var p of boots)
     }
     else{
     hero.onboot=20;
+    p.pos[1]=-1000;
   }
   }
 }
-if (checkCollisionyz(walls[0], hero)&&hero.zspeed<hero.maxzspeed) {
+if (checkCollisionyz(walls[0], hero)&&hero.flag>0) {
   hero.lives-=2;
 }
 for(var i = walls.length - 1; i > 0; i--){
@@ -239,11 +242,18 @@ for (var p of trains)
      if(checkCollisionxz(p, hero)&&hero.pos[1]<p.pos[1]+p.y2-hero.y1-0.15&&hero.pos[2]-hero.zspeed>p.pos[2])
       {
         hero.pos[2]+=1;
+         if (hero.flag>0) {
+          hero.lives-=1;
+        }
+        hero.flag=1;
       } 
     else if(checkCollisionxz(p, hero)&&hero.pos[1]<p.pos[1]+p.y2-hero.y1-0.15)
       {
         hero.pos[0]-=hero.xspeed; 
         hero.zspeed-=hero.zspeed/4;
+         if (hero.flag>0) {
+          hero.lives-=1;
+        }
         hero.flag=1;
       }
      if (checkCollisionyz(p, hero)&&hero.pos[1]+hero.y1-hero.yspeed>p.pos[1]+p.y2) {
@@ -290,7 +300,7 @@ function drawScene(gl, programInfo, deltaTime, texture_wall, texture_train, text
   // Set the drawing position to the "identity" point, which is
   // the center of the scene.
     var cameraMatrix = mat4.create();
-    mat4.translate(cameraMatrix, cameraMatrix, [hero.pos[0], hero.pos[1]+0.8, hero.pos[2]+8]);
+    mat4.translate(cameraMatrix, cameraMatrix, [hero.pos[0], hero.pos[1]+0.8, hero.pos[2]+4]);
     var cameraPosition = [
       cameraMatrix[12],
       cameraMatrix[13],
@@ -308,7 +318,6 @@ function drawScene(gl, programInfo, deltaTime, texture_wall, texture_train, text
     var viewProjectionMatrix = mat4.create();
 
     mat4.multiply(viewProjectionMatrix, projectionMatrix, viewMatrix);
-
 hero.drawHero(gl, viewProjectionMatrix, programInfo, deltaTime);
 for (var p of tracks)
 {
@@ -322,8 +331,11 @@ for (var i = walls.length - 1; i > 0; i--)
 {
   walls[i].drawTrain(gl, viewProjectionMatrix, programInfo, deltaTime, texture_wall);
 }
-if(hero.zspeed<hero.maxzspeed || hero.pos[2]==-1+hero.zspeed)
-walls[0].drawHero(gl, viewProjectionMatrix, programInfo, deltaTime);
+if(hero.flag>7 || hero.pos[2]==-1+hero.zspeed)
+{
+  walls[0].drawHero(gl, viewProjectionMatrix, programInfo, deltaTime);
+hero.test+=1;
+}
 for (var p of obstacles1)
 {
   p.drawObstacle1(gl, viewProjectionMatrix, programInfo, deltaTime, texture_obstacle1);
