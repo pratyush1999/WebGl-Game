@@ -325,11 +325,17 @@ for (var p of tracks)
 }
 for (var p of trains)
 {
+  if(hero.time%2==0)
   p.drawTrain(gl, viewProjectionMatrix, programInfo, deltaTime, texture_train);
+  else
+  p.drawBrightTrain(gl, viewProjectionMatrix, programInfo, deltaTime, texture_train);  
 }
 for (var i = walls.length - 1; i > 0; i--)
 {
+  if(hero.time%2==1)
   walls[i].drawTrain(gl, viewProjectionMatrix, programInfo, deltaTime, texture_wall);
+else
+  walls[i].drawBrightTrain(gl, viewProjectionMatrix, programInfo, deltaTime, texture_wall);
 }
 if(hero.flag>7 || hero.pos[2]==-1+hero.zspeed)
 {

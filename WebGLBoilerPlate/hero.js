@@ -31,6 +31,8 @@ let hero = class {
         this.grayscale=0;
         this.z2=this.l/2;
         this.score=0;
+        this.light=0;
+        this.time=0;
         this.faceColors = [
      [1.0,  1.0,  1.0,  1.0],   
     [1.0,  1.0,  0.0,  1.0],    
@@ -77,6 +79,7 @@ invertGray()
    this.grayscale=1-this.grayscale;
 }
 tickHero(){
+    this.time+=1;
     if (this.flag>0) {
         this.flag+=1;
         this.zspeed=this.maxzspeed/2;
