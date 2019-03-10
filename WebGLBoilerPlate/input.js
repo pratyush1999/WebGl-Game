@@ -7,6 +7,9 @@ document.addEventListener('keydown', function (event) { if (event.defaultPrevent
     if (key === 'd') {
        hero.flagy=1;
     }
+    if (key=='g') {
+      hero.grayscale=1;
+    }
     if (key === "ArrowRight") {
        hero.xspeed=hero.maxxspeed;
     }

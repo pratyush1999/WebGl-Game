@@ -28,6 +28,7 @@ let hero = class {
         this.y1=-this.h/2;
         this.y2=this.h/2;
         this.z1=-this.l/2;
+        this.grayscale=0;
         this.z2=this.l/2;
         this.score=0;
         this.faceColors = [
@@ -70,6 +71,10 @@ let hero = class {
              this.leg2.drawCube(gl, projectionMatrix, programInfo, deltaTime);
         }
         this.head.drawCube(gl, projectionMatrix, programInfo, deltaTime);
+}
+invertGray()
+{
+   this.grayscale=1-this.grayscale;
 }
 tickHero(){
     if (this.flag>0) {

@@ -14,11 +14,16 @@ function loadTexture(gl, url) {
 
  
   const level = 0;
-  const internalFormat = gl.RGBA;
+  if(hero.grayscale==1) internalFormat= gl.LUMINANCE;
+  else
+    internalFormat=gl.RGBA;
   const width = 1;
   const height = 1;
   const border = 0;
-  const srcFormat = gl.RGBA;
+  if (hero.grayscale==1) 
+    srcFormat=gl.LUMINANCE;
+  else
+    srcFormat=gl.RGBA;
   const srcType = gl.UNSIGNED_BYTE;
   const pixel = new Uint8Array([135, 143, 155, 255]);  
   gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
@@ -95,10 +100,19 @@ function main() {
     return;
   }
   // Vertex shader program
-      const texture_pebbles = loadTexture(gl, "file:///Users/pratyushkumar/graphics/Webgl-Subway-Surfers/Assignment3/WebGLBoilerPlate/stones.jpeg"); 
-      const texture_wall = loadTexture(gl, "file:///Users/pratyushkumar/graphics/Webgl-Subway-Surfers/Assignment3/WebGLBoilerPlate/wall.jpeg");
-      const texture_train = loadTexture(gl, "file:///Users/pratyushkumar/graphics/Webgl-Subway-Surfers/Assignment3/WebGLBoilerPlate/train.png");
-      const texture_obstacle1 = loadTexture(gl, "file:///Users/pratyushkumar/graphics/Webgl-Subway-Surfers/Assignment3/WebGLBoilerPlate/strips.jpg"); 
+        hero.grayscale=1;
+
+     texture_pebbles_g = loadTexture(gl, "stones1.jpeg"); 
+   texture_wall_g = loadTexture(gl, "wall1.jpeg");
+ texture_train_g = loadTexture(gl, "train1.png");
+  texture_obstacle1_g= loadTexture(gl, "strips1.jpg"); 
+        hero.grayscale=0;
+    texture_pebbles = loadTexture(gl, "stones.jpeg"); 
+   texture_wall = loadTexture(gl, "wall.jpeg");
+ texture_train = loadTexture(gl, "train.png");
+  texture_obstacle1 = loadTexture(gl, "strips.jpg"); 
+  
+
   const vsSource = `
     attribute vec4 aVertexPosition;
     attribute vec4 aVertexColor;
@@ -155,7 +169,10 @@ function main() {
     now *= 0.001;  // convert to seconds
     const deltaTime = now - then;
     then = now;
-    drawScene(gl, programInfo, deltaTime, texture_wall, texture_train, texture_obstacle1, texture_pebbles);
+    if(hero.grayscale==1)
+    drawScene(gl, programInfo, deltaTime, texture_wall_g, texture_train_g, texture_obstacle1_g, texture_pebbles_g);
+    else
+          drawScene(gl, programInfo, deltaTime, texture_wall, texture_train, texture_obstacle1, texture_pebbles);
 
     requestAnimationFrame(render);
   }
@@ -324,6 +341,7 @@ for(var b of boots){
 else
   b.drawBoot(gl, viewProjectionMatrix, programInfo, deltaTime);
 }
+
 }
 
 //
