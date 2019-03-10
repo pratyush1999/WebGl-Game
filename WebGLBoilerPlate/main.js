@@ -96,9 +96,12 @@ function main() {
 
   obstacleStands.push(new obstacleStand(gl, [hero.pos[0]-0.3, t.pos[1]+t.y2+0.1, t.pos[2]-10-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
   obstacleStands.push(new obstacleStand(gl, [hero.pos[0]+0.1, t.pos[1]+t.y2+0.1, t.pos[2]-10-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
-  // obstacleStands.push(new jet(gl, [hero.pos[0], t.pos[1]+t.y2+0.04, t.pos[2]-4], -0.1, 0.1, -0.1, 0.1, -0.02, 0.02));
-  // obstacleStands.push(new jet(gl, [hero.pos[0]-0.1/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1], -0.1/4, 0.1/4, -0.1/2, 0.1/2, -0.02, 0.02));
-  // obstacleStands.push(new jet(gl, [hero.pos[0]+0.1/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1], -0.1/4, 0.1/4, -0.1/2, 0.1/2, -0.02, 0.02));
+  obstacleStands.push(new jet(gl, [hero.pos[0], t.pos[1]+t.y2+0.04, t.pos[2]-4], -0.1, 0.1, -0.1, 0.1, -0.02, 0.02));
+  obstacleStands.push(new jet(gl, [hero.pos[0]-0.1/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1], -0.1/4, 0.1/4, -0.1/2, 0.1/2, -0.02, 0.02));
+  obstacleStands.push(new jet(gl, [hero.pos[0]+0.1/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1], -0.1/4, 0.1/4, -0.1/2, 0.1/2, -0.02, 0.02));
+  obstacleStands.push(new jet(gl, [hero.pos[0], t.pos[1]+t.y2+0.04, t.pos[2]-4-10], -0.1, 0.1, -0.1, 0.1, -0.02, 0.02));
+  obstacleStands.push(new jet(gl, [hero.pos[0]-0.1/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1-10], -0.1/4, 0.1/4, -0.1/2, 0.1/2, -0.02, 0.02));
+  obstacleStands.push(new jet(gl, [hero.pos[0]+0.1/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1-10], -0.1/4, 0.1/4, -0.1/2, 0.1/2, -0.02, 0.02));
   // If we don't have a GL context, give up now
 
   if (!gl) {
@@ -192,6 +195,12 @@ const programInfoGrayScale = {
     now *= 0.001;  // convert to seconds
     const deltaTime = now - then;
     then = now;
+    if (hero.pos[2]<-30) {
+      alert('Game Over');
+      alert("Score:"+hero.score);
+      alert("Lives Remaining:"+hero.lives);
+      return ;
+    }
             if (hero.grayscale) {          
               drawScene(gl, programInfoGrayScale, deltaTime, texture_wall, texture_train, texture_obstacle1, texture_pebbles);
 

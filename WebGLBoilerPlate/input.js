@@ -18,4 +18,8 @@ document.addEventListener('keydown', function (event) { if (event.defaultPrevent
        hero.yspeed+=hero.inityspeed;
      else hero.yspeed+=hero.inityspeed/4;
     }
+    if (key=='s') {
+      alert("Score:"+hero.score);
+      alert("Lives Remaining:"+hero.lives);
+    }
   });

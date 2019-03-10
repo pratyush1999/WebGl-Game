@@ -16,13 +16,12 @@ let jet = class {
         this.isJet=1;
         this.pos = pos;
         this.faceColors = [
-     [1.0,  1.0,  1.0,  1.0],   
-    [1.0,  1.0,  0.0,  1.0],    
-    [0.0,  0.0,  1.0,  1.0],   
-    [0.0,  1.0,  1.0,  1.0],   
-    [1.0,  0.0,  0.0,  1.0],   
-    [1.0,  0.0,  1.0,  1.0],   
-
+     [Math.random(),  Math.random(),  Math.random(),  Math.random()],   
+    [Math.random(),  Math.random(),  Math.random(),  Math.random()],    
+    [Math.random(),  Math.random(),  Math.random(),  Math.random()],   
+    [Math.random(),  Math.random(),  Math.random(),  Math.random()],   
+    [Math.random(),  Math.random(),  Math.random(),  Math.random()],   
+    [Math.random(),  Math.random(),  Math.random(),  Math.random()],   
         ];
         this.figure=new cuboidColor(gl, this.pos, this.faceColors, x1, x2, y1, y2, z1, z2);
     }
