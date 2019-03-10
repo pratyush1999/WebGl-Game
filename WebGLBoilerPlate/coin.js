@@ -15,6 +15,10 @@ let coin = class {
         this.z2=z2;
         this.iscoin=1;
         this.pos = pos;
+        if ((hero.forcoin)%2==0) {
+        this.powerup=1;
+        }else
+        this.powerup=0;
         this.faceColors = [
      [244/256, 203/256, 66/256, 1],
        [244/256, 203/256, 66/256, 1],
@@ -22,6 +26,15 @@ let coin = class {
        [244/256, 203/256, 66/256, 1],  
       [244/256, 203/256, 66/256, 1],
        [244/256, 203/256, 66/256, 1],
+        ];
+          this.faceColorspowerup = [
+     [244/256, 66/256, 134/256, 1.0],
+            [244/256, 66/256, 134/256, 1.0],
+
+    [244/256, 66/256, 134/256, 1.0],
+            [244/256, 66/256, 134/256, 1.0], 
+      [244/256, 66/256, 134/256, 1.0],
+            [244/256, 66/256, 134/256, 1.0],
         ];
        this.positionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);

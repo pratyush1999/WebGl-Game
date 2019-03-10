@@ -22,7 +22,9 @@ let hero = class {
         this.onboot=0;
         this.test=0;
         this.lives=10;
+        this.forcoin=0;
         this.onTrain=0;
+        this.prevy=0;
         this.x1=-this.w/2;
         this.x2=this.w/2;
         this.y1=-this.h/2;
@@ -79,6 +81,7 @@ invertGray()
    this.grayscale=1-this.grayscale;
 }
 tickHero(){
+    this.prevy=this.pos[1];
     this.time+=1;
     if (this.flag>0) {
         this.flag+=1;
@@ -100,25 +103,28 @@ tickHero(){
      this.yspeed+=this.gravity;
     else
         this.yspeed=0;
-   
+    if(this.flagy<=0)
     this.pos[1]+=this.yspeed;
     this.pos[0]+=this.xspeed;
 
      if (this.pos[1]<this.ground) {
         this.pos[1]=this.ground;
     }
+    
       if (this.flagy>0) {
         this.flagy+=1;
-        hero.pos[1]-=1;
+        this.pos[1]-=1;
+        this.yspeed=0;
         if (this.flagy>4) {
             this.flagy=0;
             this.pos[1]+=1;
         }
     }
+   
      if (this.fly>0) {
         this.fly-=1;
         this.rotation=-90;
-        this.pos[1]=9;
+        this.pos[1]=7;
     }else
     this.rotation=0;
     this.torso.pos=this.pos;

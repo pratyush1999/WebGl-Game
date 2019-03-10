@@ -63,11 +63,19 @@ function main() {
   {
     tracks.push(new track(gl, [hero.pos[0]-1.4, t.pos[1]+t.y2, hero.pos[2]+i], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
     tracks[tracks.length-1].pebbles=1;
-     tracks.push(new track(gl, [hero.pos[0]-1.4, t.pos[1]+t.y2, hero.pos[2]-i], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
+    tracks.push(new track(gl, [hero.pos[0]-1.4, t.pos[1]+t.y2, hero.pos[2]-i], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
     tracks[tracks.length-1].pebbles=1;
   }
-  trains.push(new train(gl, [t.pos[0], t.pos[1]+t.y2+1-0.2, t.pos[2]-10], -1.0, -1.0+4.0/3.0, -1.0, 1, -4.0, 1.0));
-  trains.push(new train(gl, [t.pos[0]+2.7, t.pos[1]+t.y2+1-0.2, t.pos[2]-10], -1.0, -1.0+4.0/3.0, -1.0, 1, -4.0, 1.0));
+  tracks.push(new track(gl, [hero.pos[0]-1.4, hero.pos[1]-1/10.0-1/15.0-1, hero.pos[2]-30], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0, 0));
+  for(var i=0;i>-30;i-=2)
+  {
+    tracks.push(new track(gl, [hero.pos[0]-1.4, t.pos[1]+t.y2, hero.pos[2]+i-30], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
+    tracks[tracks.length-1].pebbles=1;
+    tracks.push(new track(gl, [hero.pos[0]-1.4, t.pos[1]+t.y2, hero.pos[2]-i-30], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
+    tracks[tracks.length-1].pebbles=1;
+  }
+  trains.push(new train(gl, [t.pos[0], t.pos[1]+t.y2+1-0.2, t.pos[2]-10], -1.0, -1.0+4.0/3.0, -1.0, 1, -10.0, 1.0));
+  trains.push(new train(gl, [t.pos[0]+2.7, t.pos[1]+t.y2+1-0.2, t.pos[2]-10], -1.0, -1.0+4.0/3.0, -1.0, 1, -10.0, 1.0));
   walls.push(new train(gl, [t.pos[0]-0.5, t.pos[1]+2, t.pos[2]], -3.0, -1.0, -1.0, -0., -4.0, 4.0));
   walls.push(new train(gl, [t.pos[0]-0.5, t.pos[1]+2, t.pos[2]], 4.0, 5.0, -1.0, -0., -4.0, 4.0));
   tracks.push(new track(gl, [hero.pos[0], t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0, 0));
@@ -83,9 +91,29 @@ function main() {
     tracks.push(new track(gl, [hero.pos[0]+1.4, t.pos[1]+t.y2, hero.pos[2]-i], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
     tracks[tracks.length-1].pebbles=1;
   }
+  tracks.push(new track(gl, [hero.pos[0], t.pos[1], hero.pos[2]-30], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0, 0));
+  tracks.push(new track(gl, [hero.pos[0]+1.4, t.pos[1], hero.pos[2]-30], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0, 0));
+  for(var i=0;i>-30;i-=2)
+  {
+    tracks.push(new track(gl, [hero.pos[0], t.pos[1]+t.y2, hero.pos[2]+i-30], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
+    tracks[tracks.length-1].pebbles=1;
+    tracks.push(new track(gl, [hero.pos[0]+1.4, t.pos[1]+t.y2, hero.pos[2]+i-30], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
+    tracks[tracks.length-1].pebbles=1;
+     tracks.push(new track(gl, [hero.pos[0], t.pos[1]+t.y2, hero.pos[2]-i-30], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
+    tracks[tracks.length-1].pebbles=1;
+    tracks.push(new track(gl, [hero.pos[0]+1.4, t.pos[1]+t.y2, hero.pos[2]-i-30], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
+    tracks[tracks.length-1].pebbles=1;
+  }
   boots.push(new boot(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-8], -0.05, 0.05, -0.1, 0.1, -0.005, 0.005));
   for(var i=0;i<10;i+=1)
-    boots.push(new coin(gl, [hero.pos[0]-1.4, t.pos[1]+t.y2+0.1, t.pos[2]-3-i], -0.1, 0.1, -0.1, 0.1, -0.1, 0.1));
+    {
+        hero.forcoin++;
+      boots.push(new coin(gl, [hero.pos[0]-1.4, t.pos[1]+t.y2+0.1, t.pos[2]-3-i], -0.1, 0.1, -0.1, 0.1, -0.1, 0.1));
+    }
+   for(var i=0;i<5;i+=1)
+    boots.push(new coin(gl, [hero.pos[0]+1.4, t.pos[1]+t.y2+0.1, t.pos[2]-3-i-20], -0.1, 0.1, -0.1, 0.1, -0.1, 0.1));
+   for(var i=0;i<5;i+=1)
+    boots.push(new coin(gl, [hero.pos[0]-1.4, t.pos[1]+t.y2+0.1, t.pos[2]-3-i-20], -0.1, 0.1, -0.1, 0.1, -0.1, 0.1));
   //obstacles1.push(new obstacle1(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.1, 0.1, -0.1, 0.1, -0.05, 0.05));;
   //coins.push(new coin(gl, [hero.pos[0]-0.1, t.pos[1]+t.y2+0.1-4, t.pos[2]-4], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005))
   obstacles1.push(new obstacle1(gl, [hero.pos[0]-0.1, t.pos[1]+1.3, t.pos[2]-10], -0.2, 0.2, -0.1, 0.1, -0.05, 0.05)); 
@@ -222,8 +250,8 @@ function tick(gl){
   // tracks.push(new track(gl, [3.4,  temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
   walls[0].pos[2]=hero.pos[2]+1;
   walls[0].tickHero();
-  walls.push(new train(gl, [0.6, t.pos[1], hero.pos[2]], -3.0, -1.0, -1.0, -0., -10.0, 1.0));
-  walls.push(new train(gl, [0.6-0.5-0.4, t.pos[1], hero.pos[2]], 4.0, 5.0, -1.0, -0., -10.0, 1.0));
+  walls.push(new train(gl, [0.6, t.pos[1], hero.pos[2]], -3.0, -1.0, -1.0, -0., -20.0, 1.0));
+  walls.push(new train(gl, [0.6-0.5-0.4, t.pos[1], hero.pos[2]], 4.0, 5.0, -1.0, -0., -20.0, 1.0));
 hero.tickHero();
 for (var p of tracks)
 {
@@ -249,6 +277,9 @@ for(var p of boots)
 {
   if (checkCollisionyz(p, hero)) {
     if (p.iscoin) {
+      if (p.powerup) {
+        hero.lives+=10;
+      }
        hero.score+=1;
        p.pos[1]=-1000;
     }
@@ -287,7 +318,7 @@ for (var p of trains)
         }
         hero.flag=1;
       }
-     if (checkCollisionyz(p, hero)&&hero.pos[1]+hero.y1-hero.yspeed>p.pos[1]+p.y2) {
+     if (checkCollisionyz(p, hero)&&hero.prevy>p.pos[1]+p.y2) {
         hero.onTrain=1;
         hero.pos[1]=p.pos[1]+p.y2-hero.y1;
       } 
