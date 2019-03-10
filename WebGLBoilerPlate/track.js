@@ -1,7 +1,7 @@
 /// <reference path="webgl.d.ts" />
 
 let track = class {
-    constructor(gl, pos, x1, x2, y1, y2, z1, z2) {
+    constructor(gl, pos, x1, x2, y1, y2, z1, z2, pebbels) {
         
         this.rotation = 0;
         this.x1=x1;
@@ -11,14 +11,14 @@ let track = class {
         this.z1=z1;
         this.z2=z2;
         this.pos = pos;
+        this.pebbels=pebbels;
           this.faceColors = [
-     [1.0,  1.0,  1.0,  1.0],   
-    [1.0,  1.0,  0.0,  1.0],    
-    [0.0,  0.0,  1.0,  1.0],   
-    [0.0,  1.0,  1.0,  1.0],   
-    [1.0,  0.0,  0.0,  1.0],   
-    [1.0,  0.0,  1.0,  1.0],   
-
+     [56/256,  57/256,  58/256,  1],   
+   [56/256,  57/256,  58/256,  1],  
+    [56/256,  57/256,  58/256,  1],   
+   [56/256,  57/256,  58/256,  1],  
+    [56/256,  57/256,  58/256,  1],   
+   [56/256,  57/256,  58/256,  1],      
         ];
         const textureCoordinates = [
     // Front
@@ -52,13 +52,16 @@ let track = class {
     1.0,  1.0,
     0.0,  1.0,
   ];
-
         this.figure=new cuboid(gl, this.pos, this.faceColors, x1, x2, y1, y2, z1, z2, textureCoordinates);
+        this.figure1 = new cuboidColor(gl, this.pos, this.faceColors, x1, x2, y1, y2, z1, z2);
 
     }
 
     drawTrack(gl, projectionMatrix, programInfo, deltaTime, texture) {
+        if(this.pebbels)
         this.figure.drawCuboid(gl, projectionMatrix, programInfo, deltaTime, texture) ;
+        else
+            this.figure1.drawCuboidColor(gl, projectionMatrix, programInfo, deltaTime) ;
     }
     tickTrack(x){
         this.pos[2]+=x;

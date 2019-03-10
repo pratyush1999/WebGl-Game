@@ -11,6 +11,6 @@ document.addEventListener('keydown', function (event) { if (event.defaultPrevent
        hero.xspeed=hero.maxxspeed;
     }
     if (key === " ") {
-       hero.yspeed=hero.inityspeed;
+       hero.yspeed+=hero.inityspeed;
     }
   });

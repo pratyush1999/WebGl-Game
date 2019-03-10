@@ -16,16 +16,24 @@ let boot = class {
         this.iscoin=0;
         this.pos = pos;
         this.faceColors = [
-     [1.0,  1.0,  1.0,  1.0],   
+     [96/255, 75/255, 4/255,  1.0],   
+    [96/255, 75/255, 4/255,  1.0],   
+      [96/255, 75/255, 4/255,  1.0],   
+    [96/255, 75/255, 4/255,  1.0],      
+       [96/255, 75/255, 4/255,  1.0],   
+    [96/255, 75/255, 4/255,  1.0],   
+
+        ];
+          this.faceColors1 = [
+      [1.0,  1.0,  1.0,  1.0],   
     [1.0,  1.0,  0.0,  1.0],    
     [0.0,  0.0,  1.0,  1.0],   
     [0.0,  1.0,  1.0,  1.0],   
     [1.0,  0.0,  0.0,  1.0],   
     [1.0,  0.0,  1.0,  1.0],   
-
         ];
         this.figure=new cuboidColor(gl, this.pos, this.faceColors, x1, x2, y1, y2, z1, z2);
-        this.figure1=new cuboidColor(gl, [this.pos[0], this.pos[1]+y1+y2/4, this.pos[2]+z2], this.faceColors, x1, x2, y1/4, y2/4, 2*z1, 2*z2);
+        this.figure1=new cuboidColor(gl, [this.pos[0], this.pos[1]+y1+y2/4, this.pos[2]+z2], this.faceColors1, x1, x2, y1/4, y2/4, 2*z1, 2*z2);
     }
 
     drawBoot(gl, projectionMatrix, programInfo, deltaTime) {

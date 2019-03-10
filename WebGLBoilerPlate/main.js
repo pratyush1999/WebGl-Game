@@ -20,7 +20,7 @@ function loadTexture(gl, url) {
   const border = 0;
   const srcFormat = gl.RGBA;
   const srcType = gl.UNSIGNED_BYTE;
-  const pixel = new Uint8Array([0, 0, 255, 255]);  // opaque blue
+  const pixel = new Uint8Array([135, 143, 155, 255]);  
   gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
                 width, height, border, srcFormat, srcType,
                 pixel);
@@ -55,24 +55,36 @@ function main() {
   const canvas = document.querySelector('#glcanvas');
   const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
 
-  hero = new hero(gl, [2, 5, -1.0]);
-  tracks.push(new track(gl, [hero.pos[0]-1.4, hero.pos[1]-1/10.0-1/15.0-1, hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0));
+  hero = new hero(gl, [2, 5, -1.0]); 
+  tracks.push(new track(gl, [hero.pos[0]-1.4, hero.pos[1]-1/10.0-1/15.0-1, hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0, 0));
   var t=tracks[tracks.length-1];
+  for(var i=0;i>-30;i-=2)
+  {
+    tracks.push(new track(gl, [hero.pos[0]-1.4, t.pos[1]+t.y2, hero.pos[2]+i], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
+    tracks[tracks.length-1].pebbles=1;
+  }
   trains.push(new train(gl, [t.pos[0], t.pos[1]+t.y2+1-0.2, t.pos[2]-10], -1.0, -1.0+4.0/3.0, -1.0, 1, -4.0, 1.0));
-  trains.push(new train(gl, [t.pos[0]+3, t.pos[1]+t.y2+1-0.2, t.pos[2]-10], -1.0, -1.0+4.0/3.0, -1.0, 1, -4.0, 1.0));
-  walls.push(new train(gl, [t.pos[0]-0.5, t.pos[1]+2, t.pos[2]], -3.0, -1.0, -1.0, -0., -4.0, 10.0));
-  walls.push(new train(gl, [t.pos[0]-0.5, t.pos[1]+2, t.pos[2]], 4.0, 5.0, -1.0, -0., -4.0, 1.0));
-  tracks.push(new track(gl, [hero.pos[0], t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0));
-  tracks.push(new track(gl, [hero.pos[0]+1.4, t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0));
+  trains.push(new train(gl, [t.pos[0]+2.7, t.pos[1]+t.y2+1-0.2, t.pos[2]-10], -1.0, -1.0+4.0/3.0, -1.0, 1, -4.0, 1.0));
+  walls.push(new train(gl, [t.pos[0]-0.5, t.pos[1]+2, t.pos[2]], -3.0, -1.0, -1.0, -0., -4.0, 4.0));
+  walls.push(new train(gl, [t.pos[0]-0.5, t.pos[1]+2, t.pos[2]], 4.0, 5.0, -1.0, -0., -4.0, 4.0));
+  tracks.push(new track(gl, [hero.pos[0], t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0, 0));
+  tracks.push(new track(gl, [hero.pos[0]+1.4, t.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -30.0, 5.0, 0));
+  for(var i=0;i>-30;i-=2)
+  {
+    tracks.push(new track(gl, [hero.pos[0], t.pos[1]+t.y2, hero.pos[2]+i], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
+    tracks[tracks.length-1].pebbles=1;
+    tracks.push(new track(gl, [hero.pos[0]+1.4, t.pos[1]+t.y2, hero.pos[2]+i], -1.0, -1.0+4.0/3.0, -0.001, 0.001, -1.0/2, 1.0/2, 1));
+    tracks[tracks.length-1].pebbles=1;
+  }
   boots.push(new boot(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-8], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005));
   for(var i=0;i<10;i+=1)
     boots.push(new coin(gl, [hero.pos[0]-1.4, t.pos[1]+t.y2+0.1, t.pos[2]-3-i], -0.1, 0.1, -0.1, 0.1, -0.1, 0.1));
   //obstacles1.push(new obstacle1(gl, [hero.pos[0], t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.1, 0.1, -0.1, 0.1, -0.05, 0.05));;
   //coins.push(new coin(gl, [hero.pos[0]-0.1, t.pos[1]+t.y2+0.1-4, t.pos[2]-4], -0.01, 0.01, -0.1, 0.1, -0.005, 0.005))
-  obstacles1.push(new obstacle1(gl, [hero.pos[0], t.pos[1]+1.3, t.pos[2]-10], -0.2, 0.2, -0.1, 0.1, -0.05, 0.05)); 
+  obstacles1.push(new obstacle1(gl, [hero.pos[0]-0.1, t.pos[1]+1.3, t.pos[2]-10], -0.2, 0.2, -0.1, 0.1, -0.05, 0.05)); 
 
-  obstacleStands.push(new obstacleStand(gl, [hero.pos[0]-0.2, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
-  obstacleStands.push(new obstacleStand(gl, [hero.pos[0]+0.2, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
+  obstacleStands.push(new obstacleStand(gl, [hero.pos[0]-0.3, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
+  obstacleStands.push(new obstacleStand(gl, [hero.pos[0]+0.1, t.pos[1]+t.y2+0.1, t.pos[2]-10], -0.005, 0.005, -0.1, 0.1, -0.005, 0.005));
   obstacleStands.push(new jet(gl, [hero.pos[0], t.pos[1]+t.y2+0.04, t.pos[2]-4], -0.03, 0.03, -0.04, 0.04, -0.02, 0.02));
   obstacleStands.push(new jet(gl, [hero.pos[0]-0.02/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1], -0.02/4, 0.02/4, -0.04/4, 0.04/4, -0.02, 0.02));
   obstacleStands.push(new jet(gl, [hero.pos[0]+0.02/2, t.pos[1]+t.y2+0.04, t.pos[2]-4+0.1], -0.02/4, 0.02/4, -0.04/4, 0.04/4, -0.02, 0.02));
@@ -82,10 +94,10 @@ function main() {
     return;
   }
   // Vertex shader program
-      const texture_track = loadTexture(gl, "file:///Users/pratyushkumar/graphics/Webgl-Subway-Surfers/Assignment3/WebGLBoilerPlate/track.png");
+      const texture_pebbles = loadTexture(gl, "file:///Users/pratyushkumar/graphics/Webgl-Subway-Surfers/Assignment3/WebGLBoilerPlate/stones.jpeg"); 
       const texture_wall = loadTexture(gl, "file:///Users/pratyushkumar/graphics/Webgl-Subway-Surfers/Assignment3/WebGLBoilerPlate/wall.jpeg");
       const texture_train = loadTexture(gl, "file:///Users/pratyushkumar/graphics/Webgl-Subway-Surfers/Assignment3/WebGLBoilerPlate/train.png");
-       const texture_obstacle1 = loadTexture(gl, "file:///Users/pratyushkumar/graphics/Webgl-Subway-Surfers/Assignment3/WebGLBoilerPlate/strips.jpg"); 
+      const texture_obstacle1 = loadTexture(gl, "file:///Users/pratyushkumar/graphics/Webgl-Subway-Surfers/Assignment3/WebGLBoilerPlate/strips.jpg"); 
   const vsSource = `
     attribute vec4 aVertexPosition;
     attribute vec4 aVertexColor;
@@ -142,7 +154,7 @@ function main() {
     now *= 0.001;  // convert to seconds
     const deltaTime = now - then;
     then = now;
-    drawScene(gl, programInfo, deltaTime, texture_track, texture_wall, texture_train, texture_obstacle1);
+    drawScene(gl, programInfo, deltaTime, texture_wall, texture_train, texture_obstacle1, texture_pebbles);
 
     requestAnimationFrame(render);
   }
@@ -153,10 +165,12 @@ function main() {
 // Draw the scene.
 //
 function tick(gl){
-  var temp_track=tracks[tracks.length-1];
-   tracks.push(new track(gl, [0.2, temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
-  tracks.push(new track(gl, [2,  temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
-  tracks.push(new track(gl, [3.4,  temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
+  var t=walls[walls.length-1];
+  //  tracks.push(new track(gl, [0.2, temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
+  // tracks.push(new track(gl, [2,  temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
+  // tracks.push(new track(gl, [3.4,  temp_track.pos[1], hero.pos[2]], -1.0, -1.0+4.0/3.0, -1.0, 1.0, -1.0, 1.0));
+   walls.push(new train(gl, [0.6, t.pos[1], hero.pos[2]], -3.0, -1.0, -1.0, -0., -10.0, 1.0));
+  walls.push(new train(gl, [0.6-0.5-0.4, t.pos[1], hero.pos[2]], 4.0, 5.0, -1.0, -0., -10.0, 1.0));
 hero.tickHero();
 for (var p of tracks)
 {
@@ -188,6 +202,11 @@ for(var p of boots)
   }
   }
 }
+for(var p of walls){
+  if (checkCollisionyz(p, hero)) {
+    hero.pos[0]-=hero.xspeed;
+  }
+}
 hero.onTrain=0;
 for (var p of trains)
 {
@@ -202,7 +221,7 @@ for (var p of trains)
         hero.zspeed-=hero.zspeed/4;
         hero.flag=1;
       }
-      else if (checkCollisionyz(p, hero)) {
+     if (checkCollisionyz(p, hero)&&hero.pos[1]+hero.y1-hero.yspeed>p.pos[1]+p.y2) {
         hero.onTrain=1;
         hero.pos[1]=p.pos[1]+p.y2-hero.y1;
       } 
@@ -210,10 +229,10 @@ for (var p of trains)
 }
 hero.xspeed=0;
 }
-function drawScene(gl, programInfo, deltaTime, texture_track, texture_wall, texture_train, texture_obstacle1) {
+function drawScene(gl, programInfo, deltaTime, texture_wall, texture_train, texture_obstacle1, texture_pebbles) {
   
   tick(gl);
-  gl.clearColor(0, 255, 255, 1.0);  // Clear to black, fully opaque
+  gl.clearColor(0, 0, 0, 1.0);  // Clear to black, fully opaque
   gl.clearDepth(1.0);                 // Clear everything
   gl.enable(gl.DEPTH_TEST);           // Enable depth testing
   gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
@@ -268,7 +287,7 @@ function drawScene(gl, programInfo, deltaTime, texture_track, texture_wall, text
 hero.drawHero(gl, viewProjectionMatrix, programInfo, deltaTime);
 for (var p of tracks)
 {
-  p.drawTrack(gl, viewProjectionMatrix, programInfo, deltaTime, texture_track);
+  p.drawTrack(gl, viewProjectionMatrix, programInfo, deltaTime, texture_pebbles);
 }
 for (var p of trains)
 {
