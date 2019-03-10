@@ -122,7 +122,8 @@ const textureCoordBuffer = gl.createBuffer();
       vTextureCoord = aTextureCoord;
     }
   `;
-  const fsSource = `
+  var fsSource;
+    fsSource = `
     varying highp vec2 vTextureCoord;
 
     uniform sampler2D uSampler;
@@ -131,6 +132,28 @@ const textureCoordBuffer = gl.createBuffer();
       gl_FragColor = texture2D(uSampler, vTextureCoord);
     }
   `;
+  var fsSource_grayscale =`
+  #ifdef GL_ES
+  precision mediump float;
+  #endif
+
+  varying highp vec2 vTextureCoord;
+  uniform sampler2D uSampler;
+
+  void main(void) {
+    highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
+    
+    vec3 color = texelColor.rgb;
+    float gray = (color.r + color.g + color.b) / 3.0;
+    vec3 grayscale = vec3(gray);
+    
+    gl_FragColor = vec4(grayscale , texelColor.a);
+    
+  }
+`;
+if (hero.grayscale==1) {
+  fsSource=fsSource_grayscale;
+}
 const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
 const programInfo = {
     program: shaderProgram,

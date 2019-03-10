@@ -219,7 +219,7 @@ drawBrightTrain(gl, projectionMatrix, programInfo1, deltaTime, texture) {
       vTextureCoord = aTextureCoord;
     }
   `;
-   var fsSource = `
+  const fsSource = `
     varying highp vec2 vTextureCoord;
 
     uniform sampler2D uSampler;
@@ -228,28 +228,6 @@ drawBrightTrain(gl, projectionMatrix, programInfo1, deltaTime, texture) {
       gl_FragColor = texture2D(uSampler, vTextureCoord);
     }
   `;
-var fsSource_grayscale =`
-  #ifdef GL_ES
-  precision mediump float;
-  #endif
-
-  varying highp vec2 vTextureCoord;
-  uniform sampler2D uSampler;
-
-  void main(void) {
-    highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
-    
-    vec3 color = texelColor.rgb;
-    float gray = (color.r + color.g + color.b) / 3.0;
-    vec3 grayscale = vec3(gray);
-    
-    gl_FragColor = vec4(grayscale , texelColor.a);
-    
-  }
-`;
-if (hero.grayscale==1) {
-  fsSource=fsSource_grayscale;
-}
 const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
 const programInfo = {
     program: shaderProgram,
@@ -396,7 +374,7 @@ const programInfo = {
       vLighting = ambientLight + (directionalLightColor * directional);
     }
   `;
-var fsSource = `
+  const fsSource = `
     varying highp vec2 vTextureCoord;
     varying highp vec3 vLighting;
 
@@ -408,28 +386,7 @@ var fsSource = `
       gl_FragColor = vec4(texelColor.rgb * vLighting, texelColor.a);
     }
   `;
-var fsSource_grayscale =`
-  #ifdef GL_ES
-  precision mediump float;
-  #endif
 
-  varying highp vec2 vTextureCoord;
-  uniform sampler2D uSampler;
-
-  void main(void) {
-    highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
-    
-    vec3 color = texelColor.rgb;
-    float gray = (color.r + color.g + color.b) / 3.0;
-    vec3 grayscale = vec3(gray);
-    
-    gl_FragColor = vec4(grayscale , texelColor.a);
-    
-  }
-`;
-if (hero.grayscale==1) {
-  fsSource=fsSource_grayscale;
-}
 const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
 const programInfo = {
     program: shaderProgram,

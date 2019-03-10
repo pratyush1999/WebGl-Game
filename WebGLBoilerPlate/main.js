@@ -14,15 +14,11 @@ function loadTexture(gl, url) {
 
  
   const level = 0;
-  if(hero.grayscale==1) internalFormat= gl.LUMINANCE;
-  else
+  
     internalFormat=gl.RGBA;
   const width = 1;
   const height = 1;
   const border = 0;
-  if (hero.grayscale==1) 
-    srcFormat=gl.LUMINANCE;
-  else
     srcFormat=gl.RGBA;
   const srcType = gl.UNSIGNED_BYTE;
   const pixel = new Uint8Array([135, 143, 155, 255]);  
@@ -141,10 +137,23 @@ function main() {
       gl_FragColor = vColor;
     }
   `;
+ 
+  const fsSource_grayscale = `
+    #ifdef GL_ES
+    precision mediump float;
+    #endif
+    varying lowp vec4 vColor;
 
+    void main(void) {
+        float gray = (vColor.r + vColor.g + vColor.b) / 3.0;
+        vec3 grayscale = vec3(gray);
+        gl_FragColor = vec4(grayscale, vColor.a);
+    }
+  `;
   // Initialize a shader program; this is where all the lighting
   // for the vertices and so forth is established.
   const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
+  const shaderProgramgrayscale = initShaderProgram(gl, vsSource, fsSource_grayscale);
 
   // Collect all the info needed to use the shader program.
   // Look up which attributes our shader program is using
@@ -161,7 +170,17 @@ function main() {
       modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
     },
   };
-
+const programInfoGrayScale = {
+    program: shaderProgramgrayscale,
+    attribLocations: {
+      vertexPosition: gl.getAttribLocation(shaderProgramgrayscale, 'aVertexPosition'),
+      vertexColor: gl.getAttribLocation(shaderProgramgrayscale, 'aVertexColor'),
+    },
+    uniformLocations: {
+      projectionMatrix: gl.getUniformLocation(shaderProgramgrayscale, 'uProjectionMatrix'),
+      modelViewMatrix: gl.getUniformLocation(shaderProgramgrayscale, 'uModelViewMatrix'),
+    },
+  };
   // Here's where we call the routine that builds all the
   // objects we'll be drawing.
   //const buffers
@@ -173,7 +192,10 @@ function main() {
     now *= 0.001;  // convert to seconds
     const deltaTime = now - then;
     then = now;
-    
+            if (hero.grayscale) {          
+              drawScene(gl, programInfoGrayScale, deltaTime, texture_wall, texture_train, texture_obstacle1, texture_pebbles);
+
+            }else
           drawScene(gl, programInfo, deltaTime, texture_wall, texture_train, texture_obstacle1, texture_pebbles);
 
     requestAnimationFrame(render);
